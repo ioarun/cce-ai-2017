@@ -1,5 +1,6 @@
 ## Shortest distance path using Dijkstra's Algorithm
 
+![one](../images/one.png)
 
 ### Algorithm
 
