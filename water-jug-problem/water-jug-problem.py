@@ -1,11 +1,4 @@
-# extended euclid algorithm
-# ax + by = gcd(a,b)
-# the problem is solvable only if
-# the target volume 't' is multiple of gcd(a,b)
-
-
-# start = [0,0]
-# end = [2, 0]
+# the target volume 'end' is multiple of gcd(a,b)
 
 print "Solution for water jug problem"
 x_capacity = input("Enter Jug 1 capacity:")
