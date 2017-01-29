@@ -1,21 +1,11 @@
-# extended euclid algorithm
-# ax + by = gcd(a,b)
-# the problem is solvable only if
-# the target volume 't' is multiple of gcd(a,b)
-
-
-# start = [0,0]
-# end = [2, 0]
+'''
+Water-Jug solution using Breadth First Search Algorithm
+'''
 
 print "Solution for water jug problem"
 x_capacity = input("Enter Jug 1 capacity:")
 y_capacity = input("Enter Jug 2 capacity:")
 end = input("Enter target volume:")
-
-start = [0, 0]
-#end = 2
-#x_capacity = 4
-#y_capacity = 3
 
 def bfs(start, end, x_capacity, y_capacity):
 	path = []
@@ -65,7 +55,28 @@ def bfs(start, end, x_capacity, y_capacity):
 
 	return "Not found"
 
-print bfs(start, end, x_capacity, y_capacity)
+def gcd(a, b):
+	if a == 0:
+		return b
+	return gcd(b%a, a)
+
+# start state: x = 0 , y = 0
+start = [0, 0] 
+#end = 2
+#x_capacity = 4
+#y_capacity = 3
+
+# condition for getting a solution:
+# the target volume 'end' should be a multiple of gcd(a,b)
+
+if end % gcd(x_capacity,y_capacity) == 0:
+	print bfs(start, end, x_capacity, y_capacity)
+else:
+	print "No solution possible for this combination."
+
+
+
+
 
 
 
