@@ -6,7 +6,9 @@
 * (x, y) -> (x, 0) if y > 0
 * (x, y) -> (min(x+a), max(0, x+y - a)) if y > 0
 * (x, y) -> (max(0, x+y - b), min(x+y, b)) if x > 0
-These production rules are used to find the neighbouring states from the current states.
+<br />
+These production rules are used to find the neighbouring states from the current states.<br />
+
 The Algorithm goes like this:
 0. Create an empty `path` list.
 1. Add start state to the `front` queue.
