@@ -10,6 +10,7 @@
 These production rules are used to find the neighbouring states from the current states.<br />
 
 The Algorithm goes like this:<br />
+
 0. Create an empty `path` list.
 1. Add start state to the `front` queue.
 2. Mark it visited by adding it in `visited` list.
