@@ -4,6 +4,7 @@ using Pygame.
 ''' 
 import pygame
 import time
+from copy import deepcopy
  
 # Define some colors
 BLACK = (0, 0, 0)
@@ -40,7 +41,7 @@ row = 0
 column = 0
 
 init = [0, 0]
-goal = [9, 9]
+goal = [3, 8]
 grid = []
 policy = []
 color = RED
@@ -121,6 +122,8 @@ def draw_cell(nodes, color):
     for node in nodes:
         row = node[1][0]
         column = node[1][1]
+        if node[1] == goal:
+            color = RED
         value = node[0]
         rect = pygame.draw.rect(screen, 
             color,
@@ -133,6 +136,35 @@ def draw_cell(nodes, color):
         screen.blit(TextSurf, TextRect)
     clock.tick(60)
     pygame.display.flip()
+
+def draw_optimal_path(path, color):
+    origin = [0+1*MARGIN+22.5,0+1*MARGIN+22.5]
+    col = MARGIN + WIDTH
+    row = MARGIN + HEIGHT
+    pygame.draw.lines(screen, color, False, [(origin[0]+col*i[1], origin[1]+row*i[0]) for i in path], 4)
+    clock.tick(60)
+    pygame.display.flip()
+    while True:
+        pass
+
+def smooth(path, weight_data = 0.5, weight_smooth = 0.1, tolerance = 0.000001):
+
+    # Make a deep copy of path into newpath
+    newpath = deepcopy(path)
+
+    change = tolerance
+
+    while change >= tolerance:
+        change = 0
+        for i in range(1, len(path) - 1):
+            for j in range(len(path[0])):
+                d1 = weight_data*(path[i][j] - newpath[i][j])
+                d2 = weight_smooth*(newpath[i-1][j] + newpath[i+1][j] - 2*newpath[i][j])
+                change += abs(d1 + d2)
+                newpath[i][j] += d1 + d2
+                
+    
+    return newpath 
       
 
 def check_valid(node):
@@ -145,9 +177,11 @@ def run_bfs(init, goal, grid,cost):
     flag = False
     delta = [[-1, 0 ], # go up
          [ 0, -1], # go left
-         [ 1, 0 ], # go down
-         [ 0, 1 ]] # go right
+         [ 0, 1 ], # go down
+         [ 1, 0 ]] # go right
     delta_name = ['^', '<', 'v', '>']
+    action = [[-1 for row in range(len(grid[0]))] for col in range(len(grid))]
+
     next = None
     visited = []
     opened = []
@@ -157,7 +191,7 @@ def run_bfs(init, goal, grid,cost):
     opened.reverse()
     next = opened.pop()
     came_from = []
-    while next[1]!= goal or flag!=True:
+    while next[1]!= goal:
         #print opened
         #draw_cell(next[1], YELLOW)
         for event in pygame.event.get():
@@ -186,8 +220,9 @@ def run_bfs(init, goal, grid,cost):
                     #print opened
                     visited.append([x, y])
                     temp.append([next[0]+cost, [x, y]])
-                    if next[1] != init:
-                        policy[next[1][0]][next[1][1]] = delta_name[d]
+                    # if next[1] != init:
+                    #     policy[next[1][0]][next[1][1]] = delta_name[d]
+                    action[x][y] = d
                     # print "adjacent uncovered nodes: ", [x, y]
                     #draw_cell([x, y], BLUE)
                     #print "Expanding :",[x, y]
@@ -204,10 +239,25 @@ def run_bfs(init, goal, grid,cost):
         if(len(opened)>0):
             next = opened.pop(0)
             #print next
-    
+
+    # policy search
+    x = goal[0]
+    y = goal[1]
+    policy[x][y] = '*'
+    path = []
+    path.append([x, y])
+    while([x, y] != init):
+        x1 = x - delta[action[x][y]][0]
+        y1 = y - delta[action[x][y]][1]
+        policy[x1][y1] = delta_name[action[x][y]]
+        x = x1
+        y = y1
+        path.append([x, y])
     print policy
-    print visited
-init_grid(init, goal, obs=0)
+    path.reverse()
+    draw_optimal_path(smooth(path), GREEN)
+    #print visited
+init_grid(init, goal, obs=1)
 run_bfs(init, goal, grid, cost=1)
 # Close the window and quit.
 pygame.quit()
