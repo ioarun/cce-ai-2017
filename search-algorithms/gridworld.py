@@ -48,6 +48,8 @@ class GridWorld:
 					self.color = self.GREEN
 				elif [row, col] == self.goal:
 					self.color = self.RED
+				elif grid[row][col] == 1:
+					self.color = self.BLACK
 				else:
 					self.color = self.WHITE
 				pygame.draw.rect(self.screen,
@@ -76,6 +78,7 @@ class GridWorld:
 			TextRect.center = ((self.MARGIN + self.WIDTH)*column + 4*self.MARGIN,
 				(self.MARGIN + self.HEIGHT)*row + 4*self.MARGIN)
 			self.screen.blit(TextSurf, TextRect)
+
 
 	def draw_path(self, path):
 		origin = [0+1*self.MARGIN+22.5,0+1*self.MARGIN+22.5]
