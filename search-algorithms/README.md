@@ -11,3 +11,7 @@
 ## A-star Search Algorithm
 
 ![a-star](../images/a_star_visual.png)
+
+## Dynamic programming search
+
+![dp](../images/dp_visual.png)
