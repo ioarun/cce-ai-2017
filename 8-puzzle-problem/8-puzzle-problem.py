@@ -19,6 +19,7 @@ the goal state in minimum number of steps.
 
 from gridworld import GridWorld
 from copy import deepcopy
+import time
 
 screen_size = 500
 cell_width = 45
@@ -47,7 +48,7 @@ goal[2][0] = 7
 goal[2][1] = 6
 goal[2][2] = 5
 
-# gridworld = GridWorld(screen_size,cell_width, cell_height, cell_margin,init, goal, grid)
+gridworld = GridWorld(screen_size,cell_width, cell_height, cell_margin,init, goal, init)
 
 delta = [[-1, 0], # go up
          [ 0,-1], # go left
@@ -68,6 +69,11 @@ def is_valid(cell):
 		return True
 	else:
 		return False
+
+def draw_state(state):
+	for i in range(len(grid)):
+		for j in range(len(grid[0])):
+			gridworld.draw_cell([state[i][j], [i, j]]) # [number_on_cell, [x, y]]
 
 def run_a_star(init, goal, cost=1):
 	opened = []
@@ -114,8 +120,18 @@ def run_a_star(init, goal, cost=1):
 
 		if len(opened) > 0:
 			next = opened.pop()
-			print "next state is :",next
-			
+			print "next state is :",next[2]
+			# draw this state on pygame screen
+			draw_state(next[2])
+			gridworld.update()
+			time.sleep(1)
+
+
+# initial state	
+draw_state(init)		
+
+gridworld.update()
+time.sleep(1)
 
 run_a_star(init, goal)
 
