@@ -103,7 +103,7 @@ class GridWorld:
 		return newpath 
 
 	def show(self):
-		self.clock.tick(60)
+		self.clock.tick(500)
 		pygame.display.flip()
 			
 
