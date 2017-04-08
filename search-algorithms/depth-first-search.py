@@ -27,7 +27,7 @@ def check_valid(node):
     else:
         return False
 
-def run_bfs(init, goal, grid,cost, find_path):
+def run_dfs(init, goal, grid,cost, find_path):
     delta = [[-1, 0 ], # go up
          [ 0, -1], # go left
          [ 0, 1 ], # go down
@@ -93,7 +93,7 @@ def run_bfs(init, goal, grid,cost, find_path):
         grid_world.show()
     
 
-run_bfs(init, goal, grid, cost=1, find_path=True)
+run_dfs(init, goal, grid, cost=1, find_path=True)
 
 while True:
     pass
